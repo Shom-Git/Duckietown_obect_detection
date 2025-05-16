@@ -58,31 +58,45 @@ Roboflow is a powerful platform that simplifies the process of preparing and man
 
 7.  **Download Your Dataset:** Download the generated YOLO format dataset. Roboflow provides a `data.yaml` file that contains the paths to your training, validation, and test sets, as well as the class names. This file is crucial for training your YOLO model.
 
-## Recommended Training Environment: Google Colab
+## Training Your Custom Model Locally
 
-For training your custom YOLO model, Google Colaboratory (Colab) is highly recommended. It provides free access to powerful GPUs, which can significantly speed up the training process.
+To train your custom YOLO model on your local machine, you will typically use the Ultralytics CLI or Python API. Ensure you have the necessary hardware (ideally a dedicated GPU with CUDA set up) and have installed the required dependencies, including PyTorch.
 
-**Link to Google Colab:** [https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqa215aGd1OWcyQm5MZEg5emFRTzdZX3Q1QVVMQXxBQ3Jtc0trVnpjQVYtN2ZLUFFhSnhRazZSdHNnbDgteUs4c2dpY0R0ampLaFUtRl9kQ2FwcmM2ZW9pZjN5X09hZkltVWExM3FmVU84X0oyV2lQaU5WNXNtTDhZUnFOeEFvbXZrb196TWRFVnMwWlBTdGFJS2JSTQ&q=https%3A%2F%2Fcolab.research.google.com%2Fgithub%2FEdjeElectronics%2FTrain-and-Deploy-YOLO-Models%2Fblob%2Fmain%2FTrain_YOLO_Models.ipynb&v=r0RspiLG260]([https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqa215aGd1OWcyQm5MZEg5emFRTzdZX3Q1QVVMQXxBQ3Jtc0trVnpjQVYtN2ZLUFFhSnhRazZSdHNnbDgteUs4c2dpY0R0ampLaFUtRl9kQ2FwcmM2ZW9pZjN5X09hZkltVWExM3FmVU84X0oyV2lQaU5WNXNtTDhZUnFOeEFvbXZrb196TWRFVnMwWlBTdGFJS2JSTQ&q=https%3A%2F%2Fcolab.research.google.com%2Fgithub%2FEdjeElectronics%2FTrain-and-Deploy-YOLO-Models%2Fblob%2Fmain%2FTrain_YOLO_Models.ipynb&v=r0RspiLG260](https://colab.research.google.com/github/EdjeElectronics/Train-and-Deploy-YOLO-Models/blob/main/Train_YOLO_Models.ipynb))
+1.  **Organize Your Dataset:** Place the Roboflow-downloaded dataset (the `data.yaml` file and the `train`, `val`, and `test` image and label folders) in a suitable directory on your local machine.
 
-**Note:** You will need to upload your Roboflow-generated dataset (the `data.yaml` file and the `train`, `val`, and `test` image and label folders) to your Google Drive to use it within Colab.
+2.  **Initiate Training using the CLI:** Open your terminal, activate your `yolo_env` Anaconda environment, and navigate to a directory where you want to run the training command. Use the `yolo train` command, specifying the path to your `data.yaml` file, the desired model architecture, and other training parameters:
+
+    ```bash
+    yolo train data=path/to/your/data.yaml model=yolov8n.yaml epochs=100 imgsz=640
+    ```
+
+    **Replace:**
+    * `path/to/your/data.yaml` with the actual path to your `data.yaml` file.
+    * `yolov8n.yaml` with the desired YOLO model configuration file (e.g., `yolov8s.yaml`, `yolov8m.yaml`).
+    * `epochs=100` with the number of training epochs you want to run.
+    * `imgsz=640` with the input image size. Adjust these parameters based on your hardware and dataset.
+
+3.  **Monitor Training:** Ultralytics will display training progress in your terminal, including loss values, mAP scores, and other metrics. Training results, including the trained weights (`best.pt`), will typically be saved in a `runs/train/` directory.
 
 ## Running Object Detection with Your Trained Model
 
-Once you have trained your custom YOLO model (typically resulting in a `.pt` file) and have it downloaded (usually as a `.zip` file), follow these steps to perform object detection using the code provided in this repository within your created Anaconda environment:
+Once you have trained your custom YOLO model and have the trained weights file (e.g., `best.pt`), follow these steps to perform object detection using the code provided in this repository within your created Anaconda environment:
 
-1.  **Place Your Model in the Environment:**
-    * After downloading the zipped model (e.g., `best.zip`), navigate to your activated Anaconda environment directory. You can usually find this in your Anaconda installation folder under `envs/yolo_env/`.
+1.  **Locate Your Trained Model:** After training, find the `best.pt` file in the `runs/train/` directory (or a similar location depending on your Ultralytics version and training configuration).
+
+2.  **Place Your Model in the Environment (Optional but Recommended):**
+    * Navigate to your activated Anaconda environment directory (usually in your Anaconda installation folder under `envs/yolo_env/`).
     * Create a new directory within this environment (e.g., `trained_models`).
-    * Unzip the contents of your model `.zip` file (specifically the `.pt` file, e.g., `best.pt`) into this `trained_models` directory.
+    * Copy the `best.pt` file into this `trained_models` directory.
 
-2.  **Run the Detection Script:** Assuming your repository contains a Python script for detection (e.g., `detect.py`), you can run it using the following command from the root of your repository (make sure your Anaconda environment `yolo_env` is still activated):
+3.  **Run the Detection Script:** Assuming your repository contains a Python script for detection (e.g., `detect.py`), you can run it using the following command from the root of your repository (make sure your Anaconda environment `yolo_env` is still activated):
 
     ```bash
     python detect.py --weights path/to/your/anaconda/envs/yolo_env/trained_models/best.pt --source path/to/your/image_or_video.jpg
     ```
 
     **Replace:**
-    * `path/to/your/anaconda/envs/yolo_env/trained_models/best.pt` with the actual path to your trained model file within the Anaconda environment.
+    * `path/to/your/anaconda/envs/yolo_env/trained_models/best.pt` with the actual path to your trained model file within the Anaconda environment (or the local path if you didn't copy it).
     * `path/to/your/image_or_video.jpg` with the path to the image or video you want to perform detection on.
 
     Refer to the documentation or comments within your `detect.py` script for other available options and configurations (e.g., confidence threshold, output directory).
