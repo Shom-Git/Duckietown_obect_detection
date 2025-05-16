@@ -4,7 +4,7 @@
 
 ## Introduction to YOLO
 
-You Only Look Once (YOLO) is a state-of-the-art, real-time object detection system. Unlike traditional object detection methods that repurpose classifiers to perform detection, YOLO frames object detection as a regression problem to spatially separated bounding boxes and associated class probabilities. A single neural network directly predicts bounding boxes and class probabilities from full images in one evaluation. This end-to-end approach allows for significantly faster inference speeds, making it ideal for real-time applications.
+You Only Look Once (YOLO) is a state-of-the-art, real-time object detection system. Unlike traditional object detection methods that repurpose classifiers to perform detection, YOLO frames object detection as a regression problem to spatially separated bounding boxes and associated class probabilities. A single neural network directly predicts bounding boxes and class probabilities from full images in one evaluation. This end-to-end approach allows for significantly faster inference speeds, making it ideal for real-time applications. The current state-of-the-art implementation from Ultralytics is YOLOv8.
 
 ## Setting Up Your Environment with Anaconda and Ultralytics
 
@@ -56,11 +56,11 @@ Roboflow is a powerful platform that simplifies the process of preparing and man
 
 6.  **Generate Your Dataset:** Once you've annotated and processed your data, you can generate a dataset version in the YOLO format. Roboflow will automatically create the necessary files (images and corresponding `.txt` annotation files) organized in the way YOLO expects.
 
-7.  **Download Your Dataset:** Download the generated YOLO format dataset. Roboflow provides a `data.yaml` file that contains the paths to your training, validation, and test sets, as well as the class names. This file is crucial for training your YOLO model.
+7.  **Download Your Dataset:** Download the generated YOLO format dataset. Roboflow provides a `data.yaml` file that contains the paths to your training, validation, and test sets, as well as the class names. This file is crucial for training your YOLOv8 model.
 
 ## Training Your Custom Model Locally
 
-To train your custom YOLO model on your local machine, you will typically use the Ultralytics CLI or Python API. Ensure you have the necessary hardware (ideally a dedicated GPU with CUDA set up) and have installed the required dependencies, including PyTorch.
+To train your custom YOLOv8 model on your local machine, you will typically use the Ultralytics CLI or Python API. Ensure you have the necessary hardware (ideally a dedicated GPU with CUDA set up) and have installed the required dependencies, including PyTorch.
 
 1.  **Organize Your Dataset:** Place the Roboflow-downloaded dataset (the `data.yaml` file and the `train`, `val`, and `test` image and label folders) in a suitable directory on your local machine.
 
@@ -72,33 +72,34 @@ To train your custom YOLO model on your local machine, you will typically use th
 
     **Replace:**
     * `path/to/your/data.yaml` with the actual path to your `data.yaml` file.
-    * `yolov8n.yaml` with the desired YOLO model configuration file (e.g., `yolov8s.yaml`, `yolov8m.yaml`).
+    * `yolov8n.yaml` with the desired YOLOv8 model configuration file (e.g., `yolov8s.yaml`, `yolov8m.yaml`).
     * `epochs=100` with the number of training epochs you want to run.
     * `imgsz=640` with the input image size. Adjust these parameters based on your hardware and dataset.
 
 3.  **Monitor Training:** Ultralytics will display training progress in your terminal, including loss values, mAP scores, and other metrics. Training results, including the trained weights (`best.pt`), will typically be saved in a `runs/train/` directory.
 
-## Running Object Detection with Your Trained Model
+## Running Object Detection with Your Trained Model Using the Repository Code
 
-Once you have trained your custom YOLO model and have the trained weights file (e.g., `best.pt`), follow these steps to perform object detection using the code provided in this repository within your created Anaconda environment:
+Once you have trained your custom YOLOv8 model and have the trained weights file (e.g., `best.pt`), follow these steps to perform object detection using the provided `yolo_detect.py` script in this repository within your created Anaconda environment:
 
-1.  **Locate Your Trained Model:** After training, find the `best.pt` file in the `runs/train/` directory (or a similar location depending on your Ultralytics version and training configuration).
+1.  **Locate Your Trained Model:** After training, find the `.pt` weights file (e.g., `best.pt`) in the `runs/train/` directory (or a similar location depending on your Ultralytics version and training configuration). Rename this file to `my_model.pt` for consistency with the command below.
 
-2.  **Place Your Model in the Environment (Optional but Recommended):**
+2.  **Place Your Model in the Environment (Recommended):**
     * Navigate to your activated Anaconda environment directory (usually in your Anaconda installation folder under `envs/yolo_env/`).
     * Create a new directory within this environment (e.g., `trained_models`).
-    * Copy the `best.pt` file into this `trained_models` directory.
+    * Copy the renamed `my_model.pt` file into this `trained_models` directory.
 
-3.  **Run the Detection Script:** Assuming your repository contains a Python script for detection (e.g., `detect.py`), you can run it using the following command from the root of your repository (make sure your Anaconda environment `yolo_env` is still activated):
+3.  **Run the Detection Script:** From the root of your repository (make sure your Anaconda environment `yolo_env` is still activated), use the following command to run the `yolo_detect.py` script:
 
     ```bash
-    python detect.py --weights path/to/your/anaconda/envs/yolo_env/trained_models/best.pt --source path/to/your/image_or_video.jpg
+    python yolo_detect.py --model path/to/your/anaconda/envs/yolo_env/trained_models/my_model.pt --source usb0 --resolution 1280x720
     ```
 
     **Replace:**
-    * `path/to/your/anaconda/envs/yolo_env/trained_models/best.pt` with the actual path to your trained model file within the Anaconda environment (or the local path if you didn't copy it).
-    * `path/to/your/image_or_video.jpg` with the path to the image or video you want to perform detection on.
+    * `path/to/your/anaconda/envs/yolo_env/trained_models/my_model.pt` with the actual path to your `my_model.pt` file within the Anaconda environment (or the local path if you didn't copy it).
+    * `--source usb0` assumes your webcam is accessible via `/dev/video0` (on Linux-based systems). Adjust this according to your operating system and camera setup.
+    * `--resolution 1280x720` sets the desired input resolution. Ensure your camera supports this resolution.
 
-    Refer to the documentation or comments within your `detect.py` script for other available options and configurations (e.g., confidence threshold, output directory).
+    Refer to the comments within your `yolo_detect.py` script for other available options and configurations. Ensure that the script imports the necessary libraries (likely including `ultralytics`) and is configured to load and use the provided model path and source.
 
-Make sure your `detect.py` script imports the necessary libraries (likely including `ultralytics`) and is configured to load and use the provided weights file.
+**Note:** If "YOLOv11" becomes a publicly available and supported version by Ultralytics in the future, the specific commands and configurations might differ. Please refer to the official documentation for that version when it is released.
