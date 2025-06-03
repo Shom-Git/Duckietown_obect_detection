@@ -9,13 +9,13 @@ import torch
 import yaml
 from tqdm import tqdm
 
-from models.experimental import attempt_load
-from utils.datasets import create_dataloader
-from utils.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, check_requirements, \
+from duckiebot.scripts.experimental import attempt_load
+from duckiebot.scripts.datasets import create_dataloader
+from duckiebot.scripts.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, check_requirements, \
     box_iou, non_max_suppression, scale_coords, xyxy2xywh, xywh2xyxy, set_logging, increment_path, colorstr
-from utils.metrics import ap_per_class, ConfusionMatrix
-from utils.plots import plot_images, output_to_target, plot_study_txt
-from utils.torch_utils import select_device, time_synchronized
+from duckiebot.scripts.metrics import ap_per_class, ConfusionMatrix
+from duckiebot.scripts.plots import plot_images, output_to_target, plot_study_txt
+from duckiebot.scripts.torch_utils import select_device, time_synchronized
 
 
 def test(data,

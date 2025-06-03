@@ -1,0 +1,5 @@
+<launch>
+	<node name="dvision" pkg="dvision" type="detect_and_publish.py" output="screen"/>
+	<node name="dvision_ignore" pkg="dvision" type="detect.py" output="screen"/>
+</launch>
+

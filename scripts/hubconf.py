@@ -9,9 +9,9 @@ from pathlib import Path
 
 import torch
 
-from models.yolo import Model
-from utils.general import set_logging
-from utils.google_utils import attempt_download
+from duckiebot.scripts.yolo import Model
+from duckiebot.scripts.general import set_logging
+from duckiebot.scripts.google_utils import attempt_download
 
 dependencies = ['torch', 'yaml']
 set_logging()

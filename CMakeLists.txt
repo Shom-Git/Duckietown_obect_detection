@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(duckietown_yolov5)
+project(dvision)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -161,6 +161,7 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/detect.py
+  scripts/detect_and_publish.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -22,17 +22,17 @@ from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 import test  # import test.py to get mAP after each epoch
-from models.experimental import attempt_load
-from models.yolo import Model
-from utils.autoanchor import check_anchors
-from utils.datasets import create_dataloader
-from utils.general import labels_to_class_weights, increment_path, labels_to_image_weights, init_seeds, \
+from duckiebot.scripts.experimental import attempt_load
+from duckiebot.scripts.yolo import Model
+from duckiebot.scripts.autoanchor import check_anchors
+from duckiebot.scripts.datasets import create_dataloader
+from duckiebot.scripts.general import labels_to_class_weights, increment_path, labels_to_image_weights, init_seeds, \
     fitness, strip_optimizer, get_latest_run, check_dataset, check_file, check_git_status, check_img_size, \
     check_requirements, print_mutation, set_logging, one_cycle, colorstr
-from utils.google_utils import attempt_download
-from utils.loss import ComputeLoss
-from utils.plots import plot_images, plot_labels, plot_results, plot_evolution
-from utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first, is_parallel
+from duckiebot.scripts.google_utils import attempt_download
+from duckiebot.scripts.loss import ComputeLoss
+from duckiebot.scripts.plots import plot_images, plot_labels, plot_results, plot_evolution
+from duckiebot.scripts.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first, is_parallel
 
 logger = logging.getLogger(__name__)
 
