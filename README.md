@@ -57,7 +57,7 @@ Key Features
 
 Note
 ----
-This project does not use YOLOv5 directly, but reconstructs the core ideas and training objectives that YOLO-like models optimize for.
+Here no architechture and trainig procedure is shown, only the deployment on the duckiebot.
 
 About the Project
 -----------------
